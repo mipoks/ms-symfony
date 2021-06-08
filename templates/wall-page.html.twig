@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+
+    {% set songs = [] %}
+    <div class="container">
+
+        <div class="row">
+            {% include 'tag/alert.html.twig' %}
+            <div class="col-12">
+                {% if own is defined %}
+                    <div class="col-8">
+                        <h4>О чем хотите написать?</h4>
+                        <textarea class="form-control" name="text" id="exampleFormControlTextarea1" rows="2"></textarea>
+
+                        <button type="submit" class="btn btn-default btn-post-submit-simple my-2">Запостить</button>
+                    </div>
+                {% else %}
+                    <div class="col-8">
+                        <h1>Стена пользователя {{ person.name }}</h1>
+                        <a href="{{ path('chat', {'id': person.id} )  }}"><h3>Написать {{ person.name }}</h3></a>
+                    </div>
+                {% endif %}
+                {% if posts is empty %}
+                    <div class="no-music">
+                        <h1>{{ postemptytext }}</h1>
+                    </div>
+                {% else %}
+                    {% for post in posts %}
+                        <div class="col-8 limited" style="float: left !important;">
+                            <h5>{{ post.text }}</h5>
+                            {% if post.song is not empty %}
+                                {% set postSongs = post.song %}
+                                {% for postSong in postSongs %}
+                                    {% set songs = songs|merge([postSong]) %}
+
+                                    <audio src="{{ postSong.url }}" name="{{ postSong.songName }}"
+                                           id="{{ postSong.id }}"
+                                           orig="{{ postSong.originalUrl }}"
+                                           own="{% if postSong.own %}true{% else %}false{% endif %}" preload="auto"
+                                           controls></audio>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+
+    {% include 'tag/toast.html.twig' %}
+    {% include 'tag/modal-dialog.html.twig' %}
+
+    <script src="{{ asset('js/notify.min.js') }}"></script>
+    <script src="{{ asset('js/audioplayer.js') }}"></script>
+
+    <script>$(document).ready(function () {
+            $('audio').audioPlayer();
+            let i = 0;
+            let bbt;
+            let shareBtn;
+            let toAppend;
+            {% for song in songs %}
+            shareBtn = document.createElement('div');
+            bbt = document.createElement('div');
+            shareBtn.innerHTML = "<button data-id='${song.getId()}' data-toggle='modal' data-target='.bd-example-modal-lg' class='btn btn-song-share'>Share</button>"
+            bbt.innerHTML = "<button data-id='${song.getId()}' class='btn btn-song-text'>Get Text</button>";
+            toAppend = $('.audioplayer-volume').get(i);
+            toAppend.append(bbt);
+            toAppend.append(shareBtn);
+            i++;
+            {% endfor %}
+        });
+
+        $(document).ready(function () {
+            $(".btn-post-submit-simple").button().click(function (e) {
+                let textarea = $.trim($("textarea").val());
+                let toSend = {text: textarea};
+                $.ajax({
+                    type: 'POST',
+                    data: toSend,
+                    url: "/post/add",
+                    success: function (response) {
+                        $("textarea").val("");
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script src="{{ asset('js/share-song.js') }}"></script>
+    <script src="{{ asset('js/submit-post.js') }}"></script>
+    <script src="{{ asset('js/text-song.js') }}"></script>
+
+{% endblock %}

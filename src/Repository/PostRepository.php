@@ -16,8 +16,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $personRepository;
+
+    public function __construct(ManagerRegistry $registry, PersonRepository $personRepository)
     {
+        $this->personRepository = $personRepository;
         parent::__construct($registry, Post::class);
     }
 
@@ -44,24 +47,26 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findByPersonId(int $personId): ?array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.person_id = :person_id')
-            ->setParameter('person_id', $personId)
-            ->orderBy('p.id', 'ASC')
+        $optional = $this->personRepository->findById($personId);
+        if ($optional == null)
+            return null;
+        return $this->createQueryBuilder('post')
+            ->andWhere('post.person = :person')
+            ->setParameter('person', $optional)
+            ->orderBy('post.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Post
+    /**
+     * @param string $id
+     * @return object
+     */
+    public function findById(string $id): ?object
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->findOneBy(
+            array('id' => $id)
+        );
     }
-    */
 }

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="container">
+
+        <div class="row">
+            {% include 'tag/alert.html.twig' %}
+            <div class="col-12">
+                {% if songs is empty %}
+                    <div class="no-music">
+                        <h1>{{ songemptytext }}</h1>
+                    </div>
+                {% else %}
+                    {% for song in songs %}
+                        <div class="col-8 limited" style="float: left !important;">
+                            <audio src="{{ song.url }}" name="{{ song.songName }}" id="{{ song.id }}"
+                                   orig="{{ song.originalUrl }}"
+                                   own="{% if song.own %}true{% else %}false{% endif %}" preload="auto"
+                                   controls></audio>
+
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+
+    {% include 'tag/toast.html.twig' %}
+    {% include 'tag/modal-dialog.html.twig' %}
+
+    <script src="{{ asset('js/notify.min.js') }}"></script>
+    <script src="{{ asset('js/audioplayer.js') }}"></script>
+
+    <script>$(document).ready(function () {
+            $('audio').audioPlayer();
+            let i = 0;
+            let bbt;
+            let shareBtn;
+            let toAppend;
+            {% for song in songs %}
+            shareBtn = document.createElement('div');
+            bbt = document.createElement('div');
+            shareBtn.innerHTML = "<button data-id='${song.getId()}' data-toggle='modal' data-target='.bd-example-modal-lg' class='btn btn-song-share'>Share</button>"
+            bbt.innerHTML = "<button data-id='${song.getId()}' class='btn btn-song-text'>Get Text</button>";
+            toAppend = $('.audioplayer-volume').get(i);
+            toAppend.append(bbt);
+            toAppend.append(shareBtn);
+            i++;
+            {% endfor %}
+        });
+
+
+    </script>
+
+    <script src="{{ asset('js/share-song.js') }}"></script>
+    <script src="{{ asset('js/submit-post.js') }}"></script>
+    <script src="{{ asset('js/text-song.js') }}"></script>
+
+{% endblock %}

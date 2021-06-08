@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            {% include 'tag/alert.html.twig' %}
+            <div class="col-8">
+                {% for user in users %}
+                    <a href="{{ path('user', {'id' : user.id}) }}"><h4>{{ user.name }}</h4></a>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

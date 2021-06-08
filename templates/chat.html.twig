@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            {% include 'tag/alert.html.twig' %}
+            <div class="col-4">
+                <div class="interlocutor" id="interlocutors">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+
+        function getAvatarColor(messageSender) {
+            var hash = 0;
+            for (var i = 0; i < messageSender.length; i++) {
+                hash = 31 * hash + messageSender.charCodeAt(i);
+            }
+            var index = Math.abs(hash % colors.length);
+            return colors[index];
+        }
+
+        function getInterlocutors() {
+            $.ajax({
+                type: 'GET',
+                url: "/interlocutors",
+                success: success
+            });
+        }
+
+        function success(data) {
+            data = JSON.parse(data);
+            console.log("DATA IS:" + data.length);
+            console.log(data);
+
+            let bbt;
+            for (let i = 0; i < data.length; i++) {
+                bbt = document.createElement('button');
+                bbt.classList.add('chat-message');
+                bbt.classList.add('btn-default');
+                bbt.innerText = data[i]['chatName'];
+                bbt.dataset.id = data[i]['id'];
+                $('#interlocutors').append(bbt);
+            }
+            $('.chat-message').click(function () {
+                console.log("redirecting...");
+                window.location = "/chat/" + $(this).data('id');
+            })
+        }
+
+        getInterlocutors();
+
+    </script>
+
+{% endblock %}

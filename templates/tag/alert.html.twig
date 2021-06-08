@@ -1,0 +1,7 @@
+<div class="alert alert-{% if info is not defined %}light{% else %}{{ info.getColor() }}{% endif %}" role="alert">
+    <h4 class="alert-heading">{% if info is not defined %}Мы ищем спонсоров!{% else %}{{ info.getHead() }}{% endif %}</h4>
+    <p>{% if info is not defined %}Поддержи разработку сайта. В наших планах добавить поддержку музыки Вконтакте, Яндекс музыки{% else %}{{ info.getBody() }}{% endif %}
+    </p>
+    <hr>
+    <p class="mb-0">Наши реквизиты: Сбербанк 490123817471294, Яндекс 5023846217381</p>
+</div>

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            {% include 'tag/alert.html.twig' %}
+            <form action="{{ path('login') }}" method="POST" class="col-md-7 colomn-center">
+                <div class="form-group">
+                    <label for="username">Email</label>
+                    <input type="email" class="form-control" name="_username" id="exampleInputEmail1"
+                           placeholder="example@email.com" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label class="control-pwd" for="password">Пароль</label>
+                    <input type="password" class="form-control form-control-40" name="_password" placeholder="********"
+                           id="exampleInputPassword1">
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                <button type="submit" class="btn btn-default login-submit">Войти</button>
+                <a href="{{ path('register') }}" class="btn btn-default login-submit left">Зарегистрироваться</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

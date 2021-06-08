@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container-important">
+        <h1 class="text-important">Найду любую музыку</h1>
+        <form class="col-md-7 colomn-center" method="GET" action="{{ path('search') }}">
+            <input class="form-control form-control-3 in-big-block search-form" name="search" id="main-search"
+                   type="text"
+                   placeholder="Например, {% if somemusic is defined %}{{somemusic}}{% else %}Feduk останься{% endif %}">
+        </form>
+    </div>
+{% endblock %}

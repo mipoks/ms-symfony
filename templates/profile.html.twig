@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            {% include 'tag/alert.html.twig' %}
+            <form method="POST" class="col-md-7 colomn-center" name="profileform">
+                <div class="form-group">
+                    <label for="newname">Новое имя</label>
+                    <input type="text" class="form-control form-control-40" name="newname"
+                           placeholder="{{user.name}}"
+                           id="newname">
+                </div>
+                <div class="form-group">
+                    <label for="passold">Старый пароль</label>
+                    <input type="password" class="form-control" name="passwordold" id="passold"
+                           placeholder="********">
+                </div>
+                <div class="form-group">
+                    <label class="control-pwd" for="passnew">Новый пароль</label>
+                    <input type="password" class="form-control form-control-40" name="passwordnew"
+                           placeholder="********"
+                           id="passnew">
+                </div>
+                <div class="form-group">
+                    <label for="songcount">Количество песен в поиске</label>
+                    <input type="text" class="form-control form-control-40" name="songcount"
+                           placeholder="{{ user.songCount}}"
+                           id="songcount">
+                </div>
+                <button type="submit" id="changeprofile" class="btn btn-default login-submit">Сохранить</button>
+            </form>
+            <form method="POST" class="col-md-7 colomn-center" action="profile">
+                <div class="form-group" style="margin-top: 40px">
+                    <label for="passdelete">Пароль для удаления аккаунта</label>
+                    <input type="password" class="form-control" name="passworddelete" id="passdelete"
+                           placeholder="********">
+                </div>
+
+                <button type="submit" id="deleteprofile" class="btn btn-right btn-danger login-submit">Удалить аккаунт
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

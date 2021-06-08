@@ -7,13 +7,15 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "composer/package-versions-deprecated": "1.11.99.1",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.8",
+        "electrolinux/phpquery": "^0.9.6",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "sensio/framework-extra-bundle": "^5.1",
+        "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",
@@ -40,7 +42,9 @@
         "symfony/web-link": "5.2.*",
         "symfony/yaml": "5.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+      "ext-curl": "*",
+        "nategood/httpful": "^0.2.20"
     },
     "require-dev": {
         "symfony/browser-kit": "^5.2",
@@ -94,5 +98,7 @@
             "allow-contrib": false,
             "require": "5.2.*"
         }
-    }
+    },
+    "name": "mipoks/mus-net",
+    "description": "Listen to music for free"
 }

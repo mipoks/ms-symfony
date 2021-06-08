@@ -1,19 +1,156 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+     <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+     <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/audioplayer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
+</head>
+{% block header %}
+    <div fragment="navbar">
+        <nav class="navbar navbar-expand-lg navbar-light nav-color">
+            <a class="navbar-brand" href="{{ path('search') }}">Главная</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon my-menu-icon"></span>
+            </button>
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('me') }}">Моя музыка<span
+                                    class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ path('actual') }}">Рекомендации</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="{{ path('login') }}">
+                            Привет
+                            , {% if app.user %} {{ app.user.name }} {% else %} Слушатель {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ path('chats') }}">Мессенджер</a>
+                    </li>
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="{{ path('user', {'id': app.user.id} ) }}">Моя стена</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Аккаунт
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item"
+                                   href="{{ path('profile') }}">Настройки</a>
+                                <div class="dropdown-divider"></div>
+
+                                <form id="logout-form" action="{{ path('logout') }}" method="post">
+                                    <button type="submit"
+                                            class="dropdown-item">Выйти
+                                    </button>
+                                </form>
+
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="{{ path('login') }}">Войти</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <form method="GET" action="{{ path('search') }}" class="form-inline my-2 my-lg-0">
+                    <input class="form-control form-control-2 mr-sm-2" name="search" type="search"
+                           placeholder="Слушать"
+                           aria-label="Search">
+                    <button class="btn btn-default my-2 my-sm-0"
+                            type="submit">Найти
+                    </button>
+                </form>
+            </div>
+        </nav>
+    </div>
+
+{% endblock %}
+<body>
+{% block main %}{% endblock %}
+
+{% block footer %}
+    <div class="footer footer-start">
+        <div class="container">
+            <div class="row" style="text-align:center;">
+                <h2>Слушай кэш</h2>
+            </div>
+            <footer class="footer-bs">
+                <div class="row a-color">
+                    <div class="col-md-3 footer-brand animated fadeInLeft">
+                        <h2></h2>
+                        <p>Слушайте музыку где угодно, как угодно, без стабильного соединения. Импортируйте свой
+                            плейлист уже сейчас!</p>
+                        <p>
+                        <ol class="list-unstyled">
+                            <li><a href="/change?locale=ru_RU">Русский</a></li>
+                            <li><a href="/change?locale=en_EN">English</a></li>
+                        </ol>
+                        </p>
+                    </div>
+                    <div class="col-md-3 footer-nav animated fadeInUp">
+                        <h4>Полезные ссылки</h4>
+
+                        <div>
+                            <ul class="list">
+                                <li><a href="#">О нас</a></li>
+                                <li><a href="#">Контакты</a></li>
+                                <li><a href="#">Условия и положения</a></li>
+                                <li><a href="#">Политика конфиденциальности</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 footer-social animated fadeInDown">
+                        <h4>Следите за нами</h4>
+                        <ul>
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">Vkontakte</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 footer-ns animated fadeInRight">
+                        <h4>Новости</h4>
+                        <p>Будьте в курсе всех новостей и нововведениях</p>
+                        <p>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="example@mail.com">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default"
+                                    type="button">Подписаться</button>
+                        </span>
+                        </div>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+            <section style="text-align:center; margin:10px auto;">
+                <p>© 2020 CachePlayer <a href="https://github.com/mipoks">by mipoks</a></p>
+            </section>
+
+        </div>
+    </div>
+{% endblock %}
+</body>
+
 </html>
